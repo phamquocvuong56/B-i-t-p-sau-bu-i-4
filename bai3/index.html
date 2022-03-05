@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Bài 3</title>
+</head>
+
+<body>
+    <table border="solid">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Date of birth</th>
+            <th>Address</th>
+            <th>Phone number</th>
+        </tr>
+    </table>
+    <script>
+        async function getUsers() {
+            const response = await fetch("https://randomuser.me/api/");
+            const users = await response.json();
+            const user = users.results[0];
+            console.log(user);
+            document.getElementsByTagName('tbody')[0].innerHTML += `<tr>
+            <td>${user.name.title}.${user.name.first} ${user.name.last}</td>
+            <td>${user.email}</td>
+            <td>${user.dob.date}</td>
+            <td>${user.location.city}, ${user.location.country}</td>
+            <td>${user.phone}</td>
+        </tr>`
+        }
+        getUsers();
+    </script>
+</body>
+
+</html>

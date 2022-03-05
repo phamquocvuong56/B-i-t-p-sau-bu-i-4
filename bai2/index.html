@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Bài 1</title>
+</head>
+
+<body>
+    <div id="container">
+        <div id="clock">
+            <div id="timer">
+                <span id="hour">00</span>:
+                <span id="minute">00</span>:
+                <span id="second">00</span>
+            </div>
+            <div id="millisecond">00</div>
+        </div>
+        <div id="numbers">
+            <div class="row">
+                <button class="number col">   5          
+                    </button>
+                <button class="number col">6</button>
+                <button class="number col">7</button>
+                <button class="number col">8</button>
+                <button class="number col">9</button>
+                <button class="col set">Set</button>
+            </div>
+            <div class="row">
+                <button class="number col">0
+                    </button>
+                <button class="number col">1</button>
+                <button class="number col">2</button>
+                <button class="number col">3</button>
+                <button class="number col">4</button>
+                <button class="col clear">Clear</button>
+            </div>
+        </div>
+        <div id="hide-buttons">
+            <button class="green start">Start</button>
+            <button class="red stop">Clear</button>
+            <button class="blue back">Back</button>
+        </div>
+    </div>
+    <script>
+        var hour;
+        var minute;
+        var second;
+        var secondC = 00;
+        var minuteC = 00;
+        var hourC = 00;
+        var millisecond = 00;
+        var buttonStart = document.getElementsByClassName("start")[0];
+        var buttonStop = document.getElementsByClassName("stop")[0];
+        var buttonBack = document.getElementsByClassName("back")[0];
+        var outputHour = document.getElementById("hour");
+        var outputMinute = document.getElementById("minute");
+        var outputSecond = document.getElementById("second");
+        var outputMillisecond = document.getElementById("millisecond");
+        var setButton = document.querySelector(".set");
+        console.log(setButton)
+        var clearButton = document.querySelector(".clear");
+        var arrButton = Array.from(document.querySelectorAll('.number'));
+        var Interval;
+        // add even listener
+        var arrayNumbers = [0, 0, 0, 0, 0, 0];
+        let i = 5;
+        arrButton.forEach(function(item) {
+            item.addEventListener("click", () => {
+                    arrayNumbers[i] = item.innerText;
+                    console.log(arrayNumbers)
+                    i--;
+                    outputSecond.innerHTML = "" + arrayNumbers[4] + arrayNumbers[5];
+                    outputMinute.innerHTML = "" + arrayNumbers[2] + arrayNumbers[3];
+                    outputHour.innerHTML = "" + arrayNumbers[0] + arrayNumbers[1];
+                    second = Number(outputSecond.innerHTML);
+                    minute = Number(outputMinute.innerHTML);
+                    hour = Number(outputHour.innerHTML);
+                })
+                // if(i< 0) break;
+        })
+        buttonStart.addEventListener("click", () => {
+            if (buttonStart.innerHTML == "Start") {
+                clearInterval(Interval);
+                buttonStart.innerHTML = "Pause";
+                Interval = setInterval(StartTime, 10);
+            } else
+            if (buttonStart.innerHTML == "Pause") {
+                buttonStart.classList.toggle("blue");
+                buttonStart.innerHTML = "Continue";
+                clearInterval(Interval);
+            } else {
+                clearInterval(Interval);
+                buttonStart.classList.remove("blue");
+                buttonStart.innerHTML = "Pause";
+                Interval = setInterval(StartTime, 10);
+            }
+        })
+        buttonStop.addEventListener("click", () => {
+            clearInterval(Interval);
+            hour = hourC;
+            minute = minuteC;
+            second = secondC;
+            millisecond = 00;
+            buttonStart.innerHTML = "Start";
+            buttonStart.classList.remove("blue");
+            if (hourC > 9) {
+                outputHour.innerHTML = hourC;
+            } else {
+                outputHour.innerHTML = "0" + hourC;
+            }
+            if (minuteC > 9) {
+                outputMinute.innerHTML = minuteC;
+            } else {
+                outputMinute.innerHTML = "0" + minuteC;
+            }
+            if (secondC > 9) {
+                outputSecond.innerHTML = secondC;
+            } else {
+                outputSecond.innerHTML = "0" + secondC;
+            }
+            outputMillisecond.innerHTML = "00";
+            arrayNumbers = [0, 0, 0, 0, 0, 0];
+            i = 5;
+        })
+        buttonBack.addEventListener("click", () => {
+            document.getElementById("hide-buttons").style.display = "none";
+            document.getElementById("numbers").style.display = "block";
+        })
+        setButton.addEventListener("click", () => {
+            if (second > 60) {
+                minute += +1;
+                second -= 60;
+            }
+            if (minute > 60) {
+                hour += 1;
+                minute -= 60;
+            }
+            outputSecond.innerHTML = second;
+            outputMinute.innerHTML = minute;
+            outputHour.innerHTML = hour;
+            secondC = second;
+            minuteC = minute;
+            hourC = hour;
+            document.getElementById("hide-buttons").style.display = "flex";
+            document.getElementById("numbers").style.display = "none";
+        })
+        clearButton.addEventListener("click", () => {
+            Clear();
+            arrayNumbers = [0, 0, 0, 0, 0, 0];
+            i = 5;
+        })
+
+        function Clear() {
+            clearInterval(Interval);
+            hour = 00;
+            minute = 00;
+            second = 00;
+            millisecond = 00;
+            buttonStart.innerHTML = "Start";
+            buttonStart.classList.remove("blue");
+            outputHour.innerHTML = "00";
+            outputMinute.innerHTML = "00";
+            outputSecond.innerHTML = "00";
+            outputMillisecond.innerHTML = "00";
+        }
+
+        function StartTime() {
+            // set millisecond
+            console.log(`${hour}:${minute}:${second}`);
+            millisecond--;
+            if (millisecond > 9) {
+                outputMillisecond.innerHTML = millisecond;
+            } else
+            if (millisecond >= 0) {
+                outputMillisecond.innerHTML = "0" + millisecond;
+            } else {
+                millisecond = 99;
+                second--;
+            }
+            // set second
+            if (second > 9) {
+                outputSecond.innerHTML = second;
+            } else if (second >= 0) {
+                outputSecond.innerHTML = "0" + second;
+            } else {
+                second = 59;
+                minute--;
+            }
+            // set minute
+            if (minute > 9) {
+                outputMinute.innerHTML = minute;
+            } else if (minute >= 0) {
+                outputMinute.innerHTML = "0" + minute;
+            } else {
+                minute = 59;
+                hour--;
+            }
+            // set hour
+            if (hour > 9) {
+                outputHour.innerHTML = hour;
+            } else if (hour >= 0) {
+                outputHour.innerHTML = "0" + hour;
+            } else {
+                alert("hết giờ");
+                clearInterval(Interval);
+            }
+        }
+    </script>
+</body>
+
+</html>

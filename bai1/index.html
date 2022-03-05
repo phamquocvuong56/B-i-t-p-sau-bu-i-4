@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Bài 1</title>
+</head>
+
+<body>
+    <div id="container">
+        <div id="timer">
+            <span id="hour">00</span>:
+            <span id="minute">00</span>:
+            <span id="second">00</span>
+        </div>
+        <div id="millisecond">00</div>
+        <div id="button">
+            <button class="green start">Start</button>
+            <button class="red stop">Clear</button>
+        </div>
+    </div>
+    <script>
+        var hour = 00;
+        var minute = 00;
+        var second = 00;
+        var millisecond = 00;
+        var buttonStart = document.getElementsByClassName("start")[0];
+        var buttonStop = document.getElementsByClassName("stop")[0];
+        var outputHour = document.getElementById("hour");
+        var outputMitute = document.getElementById("minute");
+        var outputSecond = document.getElementById("second");
+        var outputMillisecond = document.getElementById("millisecond");
+        var Interval;
+        var Timeout;
+        buttonStart.addEventListener("click", () => {
+            if (buttonStart.innerHTML == "Start") {
+                clearInterval(Interval);
+                buttonStart.innerHTML = "Pause";
+                Interval = setInterval(StartTime, 10);
+            } else
+            if (buttonStart.innerHTML == "Pause") {
+                buttonStart.classList.toggle("blue");
+                buttonStart.innerHTML = "Continue";
+                clearInterval(Interval);
+            } else {
+                clearInterval(Interval);
+                buttonStart.classList.remove("blue");
+                buttonStart.innerHTML = "Pause";
+                Interval = setInterval(StartTime, 10);
+            }
+        })
+        buttonStop.addEventListener("click", () => {
+            clearInterval(Interval);
+            hour = 00;
+            minute = 00;
+            second = 00;
+            millisecond = 00;
+            buttonStart.innerHTML = "Start";
+            buttonStart.classList.remove("blue");
+            outputHour.innerHTML = "00";
+            outputMitute.innerHTML = "00";
+            outputSecond.innerHTML = "00";
+            outputMillisecond.innerHTML = "00";
+        })
+
+        function StartTime() {
+            // set millisecond
+            millisecond++;
+            if (millisecond < 10) {
+                outputMillisecond.innerHTML = "0" + millisecond;
+            } else
+            if (millisecond < 100) {
+                outputMillisecond.innerHTML = millisecond;
+            } else {
+                millisecond = 00;
+                second += 1;
+            }
+            // set second
+            if (second < 10) {
+                outputSecond.innerHTML = "0" + second;
+            } else if (second < 60) {
+                outputSecond.innerHTML = second;
+            } else {
+                second = 00;
+                minute++;
+            }
+            // set minute
+            if (minute < 10) {
+                outputMinute.innerHTML = "0" + minute;
+            } else if (minute < 60) {
+                outputMinute.innerHTML = minute;
+            } else {
+                minute = 00;
+                hour++;
+            }
+            // set hour
+            if (hour < 10) {
+                outputHour.innerHTML = "0" + hour;
+            } else if (hour < 24) {
+                outputHour.innerHTML = hour;
+            } else {
+                hour = 00;
+            }
+        }
+    </script>
+</body>
+
+</html>
